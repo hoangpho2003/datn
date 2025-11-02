@@ -13,11 +13,11 @@ class AuthAdmin
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check()) {
-            if (Auth::user()->role == 'admin') {
+            if (Auth::user()->role === 'admin') {
                 return $next($request);
             } else {
                 Session::flush();
-                return redirect('/dashboard')->with('error', 'You do not have admin access.');
+                return redirect()->route('login');
             }
         }
 
