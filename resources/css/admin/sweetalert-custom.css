@@ -1,0 +1,27 @@
+.swal2-popup.big-popup {
+    width: 440px !important;
+    font-size: 1.1rem;
+    padding: 32px !important;
+}
+
+.swal2-title.big-title {
+    font-size: 1.8rem !important;
+    font-weight: 700 !important;
+}
+
+.swal2-confirm.big-button,
+.swal2-cancel.cancel-button {
+    font-size: 1.05rem !important;
+    padding: 10px 24px !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+}
+
+.swal2-icon {
+    transform: scale(1.5);
+}
+
+.swal2-timer-progress-bar {
+    height: 5px;
+    background-color: #16a34a;
+}

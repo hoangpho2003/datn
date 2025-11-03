@@ -20,6 +20,7 @@
     <link rel="apple-touch-icon-precomposed" href="{{ asset('admin/images/favicon.ico') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/sweetalert.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/custom.css') }}">
+    @include('lib.admin.admin_css')
     @stack('styles')
 </head>
 
@@ -37,8 +38,10 @@
                 <div class="section-menu-left">
                     <div class="box-logo">
                         <a href="{{ route('admin.index') }}" id="site-logo-inner">
-                            <img class="" id="logo_header" alt="" src="images/logo/logo.png"
-                                data-light="images/logo/logo.png" data-dark="images/logo/logo.png">
+                            <img class="" id="logo_header" alt=""
+                                src="{{ asset('admin/images/logo/HPTlogo.png') }}"
+                                data-light="{{ asset('admin/images/logo/HPTlogo.png') }}"
+                                data-dark="{{ asset('admin/images/logo/HPTlogo.png') }}">
                         </a>
                         <div class="button-show-hide">
                             <i class="icon-menu-left"></i>
@@ -83,12 +86,12 @@
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
-                                            <a href="add-brand.html" class="">
+                                            <a href="{{ route('admin.brands.create') }}" class="">
                                                 <div class="text">New Brand</div>
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
-                                            <a href="brands.html" class="">
+                                            <a href="{{ route('admin.brands') }}" class="">
                                                 <div class="text">Brands</div>
                                             </a>
                                         </li>
@@ -101,12 +104,12 @@
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
-                                            <a href="add-category.html" class="">
+                                            <a href="{{ route(('admin.categories.create')) }}" class="">
                                                 <div class="text">New Category</div>
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
-                                            <a href="categories.html" class="">
+                                            <a href="{{ route('admin.categories') }}" class="">
                                                 <div class="text">Categories</div>
                                             </a>
                                         </li>
@@ -179,9 +182,11 @@
                             <div class="header-left">
                                 <a href="index-2.html">
                                     <img class="" id="logo_header_mobile" alt=""
-                                        src="images/logo/logo.png" data-light="images/logo/logo.png"
-                                        data-dark="images/logo/logo.png" data-width="154px" data-height="52px"
-                                        data-retina="images/logo/logo.png">
+                                        src="{{ asset('admin/images/logo/HPTlogo.png') }}"
+                                        data-light="{{ asset('admin/images/logo/HPTlogo.png') }}"
+                                        data-dark="{{ asset('admin/images/logo/HPTlogo.png') }}" data-width="154px"
+                                        data-height="52px"
+                                        data-retina="{{ asset('admin/images/logo/HPTlogo.png') }}">
                                 </a>
                                 <div class="button-show-hide">
                                     <i class="icon-menu-left"></i>
@@ -457,10 +462,6 @@
                     </div>
                     <div class="main-content">
                         @yield('content')
-
-                        <div class="bottom-page">
-                            <div class="body-text">Copyright © 2024 SurfsideMedia</div>
-                        </div>
                     </div>
 
                 </div>
@@ -474,6 +475,27 @@
     <script src="{{ asset('admin/js/sweetalert.min.js') }}"></script>
     <script src="{{ asset('admin/js/apexcharts/apexcharts.js') }}"></script>
     <script src="{{ asset('admin/js/main.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @include('lib.admin.admin_js')
+    <script>
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: '{{ session('success') }}',
+                confirmButtonText: 'OK'
+            });
+        @endif
+
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Failed!',
+                text: '{{ session('error') }}',
+                confirmButtonText: 'OK'
+            });
+        @endif
+    </script>
     <script>
         (function($) {
 
