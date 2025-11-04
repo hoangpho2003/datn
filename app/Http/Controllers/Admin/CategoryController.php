@@ -105,8 +105,6 @@ class CategoryController extends Controller
         $destinationPath = public_path('/uploads/categories/');
         $img = Image::read($image->path());
         $img->cover(124, 124, "top");
-        $img->resize(124, 124, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save($destinationPath . '/' . $imageName);
+        $img->resize(124, 124)->save($destinationPath . '/' . $imageName);
     }
 }
