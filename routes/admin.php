@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BrandsController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Routing\RouteUri;
 
@@ -31,3 +32,11 @@ Route::post('/products/store', [ProductController::class, 'store'])->name('produ
 Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('products.edit');
 Route::put('/products/update', [ProductController::class, 'update'])->name('products.update');
 Route::delete('/products/delete/{id}', [ProductController::class, 'delete'])->name('products.delete');
+
+//COUPONS ROUTES
+Route::get('/coupons', [CouponController::class, 'index'])->name('coupons');
+Route::get('/coupons/create', [CouponController::class, 'create'])->name('coupons.create');
+Route::post('/coupons/store', [CouponController::class, 'store'])->name('coupons.store');
+Route::get('/coupons/edit/{id}', [CouponController::class, 'edit'])->name('coupons.edit');
+Route::put('/coupons/update', [CouponController::class, 'update'])->name('coupons.update');
+Route::delete('/coupons/delete/{id}', [CouponController::class, 'delete'])->name('coupons.delete');
