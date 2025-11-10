@@ -19,6 +19,11 @@ Route::put('/cart/increase/{rowId}', action: [CartController::class, 'increase']
 Route::put('/cart/decrease/{rowId}', action: [CartController::class, 'decrease'])->name('cart.decrease');
 Route::delete('/cart/remove/{rowId}', action: [CartController::class, 'remove'])->name('cart.remove');
 Route::delete('/cart/clear', action: [CartController::class, 'clear'])->name('cart.clear');
+Route::post('/cart/apply-coupon', [CartController::class, 'applyCoupon'])->name('cart.couponApply');
+Route::delete('/cart/remove-coupon', [CartController::class, 'removeCoupon'])->name('cart.couponRemove');
+Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::post('/cart/placeAnOrder', [CartController::class, 'placeAnOrder'])->name('cart.placeAnOrder');
+Route::get('/cart/orderConfirmation', [CartController::class, 'orderConfirmation'])->name('cart.orderConfirmation');
 
 ///WISHLIST ROUTES
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');

@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
     <main class="pt-90">
         <div class="mb-4 pb-4"></div>
@@ -12,48 +11,86 @@
                     </a>
                 </li>
             </ul>
+
             <div class="tab-content pt-2">
-                <div class="register-form">
-                    <form method="POST" action="{{ route('register') }}" id="registerForm" novalidate>
-                        @csrf
+                <div class="tab-pane fade show active" id="tab-item-register" role="tabpanel"
+                    aria-labelledby="register-tab">
+                    <div class="register-form">
+                        <form method="POST" action="{{ route('register') }}" id="registerForm" novalidate>
+                            @csrf
+                            <div class="form-floating mb-3">
+                                <input id="name" type="text"
+                                    class="form-control form-control_gray @error('name') is-invalid @enderror"
+                                    name="name" value="{{ old('name') }}" required>
+                                <label for="name">Name *</label>
+                                <div class="invalid-feedback">
+                                    @error('name')
+                                        {{ $message }}
+                                    @else
+                                        Name is required.
+                                    @enderror
+                                </div>
+                            </div>
 
-                        <div class="form-floating mb-3">
-                            <input id="name" type="text" class="form-control form-control_gray" name="name"
-                                value="{{ old('name') }}" required>
-                            <label for="name">Name *</label>
-                            <div class="invalid-feedback">Name is required.</div>
-                        </div>
+                            <div class="form-floating mb-3">
+                                <input id="email" type="email"
+                                    class="form-control form-control_gray @error('email') is-invalid @enderror"
+                                    name="email" value="{{ old('email') }}" required>
+                                <label for="email">Email address *</label>
+                                <div class="invalid-feedback">
+                                    @error('email')
+                                        {{ $message }}
+                                    @else
+                                        Please enter a valid email.
+                                    @enderror
+                                </div>
+                            </div>
 
-                        <div class="form-floating mb-3">
-                            <input id="email" type="email" class="form-control form-control_gray" name="email"
-                                value="{{ old('email') }}" required>
-                            <label for="email">Email address *</label>
-                            <div class="invalid-feedback">Please enter a valid email.</div>
-                        </div>
+                            <div class="form-floating mb-3">
+                                <input id="mobile" type="text"
+                                    class="form-control form-control_gray @error('mobile') is-invalid @enderror"
+                                    name="mobile" value="{{ old('mobile') }}" required>
+                                <label for="mobile">Mobile *</label>
+                                <div class="invalid-feedback">
+                                    @error('mobile')
+                                        {{ $message }}
+                                    @else
+                                        Please enter a valid mobile (10 digits).
+                                    @enderror
+                                </div>
+                            </div>
 
-                        <div class="form-floating mb-3">
-                            <input id="mobile" type="text" class="form-control form-control_gray" name="mobile"
-                                value="{{ old('mobile') }}" required>
-                            <label for="mobile">Mobile *</label>
-                            <div class="invalid-feedback">Please enter a valid mobile (10 digits).</div>
-                        </div>
+                            <div class="form-floating mb-3">
+                                <input id="password" type="password"
+                                    class="form-control form-control_gray @error('password') is-invalid @enderror"
+                                    name="password" required>
+                                <label for="password">Password *</label>
+                                <div class="invalid-feedback">
+                                    @error('password')
+                                        {{ $message }}
+                                    @else
+                                        Password must be at least 8 characters.
+                                    @enderror
+                                </div>
+                            </div>
 
-                        <div class="form-floating mb-3">
-                            <input id="password" type="password" class="form-control form-control_gray" name="password"
-                                required>
-                            <label for="password">Password *</label>
-                            <div class="invalid-feedback">Password must be at least 8 characters.</div>
-                        </div>
+                            <div class="form-floating mb-4">
+                                <input id="password_confirmation" type="password"
+                                    class="form-control form-control_gray @error('password_confirmation') is-invalid @enderror"
+                                    name="password_confirmation" required>
+                                <label for="password_confirmation">Confirm Password *</label>
+                                <div class="invalid-feedback">
+                                    @error('password_confirmation')
+                                        {{ $message }}
+                                    @else
+                                        Passwords do not match.
+                                    @enderror
+                                </div>
+                            </div>
 
-                        <div class="form-floating mb-4">
-                            <input id="password_confirmation" type="password" class="form-control form-control_gray"
-                                name="password_confirmation" required>
-                            <label for="password_confirmation">Confirm Password *</label>
-                            <div class="invalid-feedback">Passwords do not match.</div>
-                        </div>
-
-                        <button class="btn btn-primary w-100 text-uppercase" type="submit">Register</button>
-                    </form>
+                            <button class="btn btn-primary w-100 text-uppercase" type="submit">Register</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>
