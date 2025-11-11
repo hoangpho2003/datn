@@ -1,12 +1,11 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\UserController;
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
 Route::get('/index', [UserController::class, 'index'])->name('index');
+
+//ORDERS ROUTES
+Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+Route::get('/order/{id}', [OrderController::class, 'show'])->name('order.show');
+Route::put('/order/cancel', [OrderController::class, 'cancel'])->name('order.cancel');
