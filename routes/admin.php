@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\OrderControllerr;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SlideControllerr;
 use Illuminate\Routing\RouteUri;
 
 Route::get('/index', [AdminController::class, 'index'])->name('index');
@@ -46,3 +47,8 @@ Route::delete('/coupon/delete/{id}', [CouponController::class, 'delete'])->name(
 Route::get('/orders', [OrderControllerr::class, 'index'])->name('orders');
 Route::get('/order/show/{id}', [OrderControllerr::class, 'show'])->name('orders.show');
 Route::put('/order/update', [OrderControllerr::class, 'update'])->name('orders.update');
+
+//SLIDES ROUTES
+Route::get('/slides', [SlideControllerr::class, 'index'])->name('slides');
+Route::get('/slides/create', [SlideControllerr::class, 'create'])->name('slides.create');
+Route::post('/slides/store', [SlideControllerr::class, 'store'])->name('slides.store');
