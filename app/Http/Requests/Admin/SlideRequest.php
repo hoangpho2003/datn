@@ -13,13 +13,17 @@ class SlideRequest extends FormRequest
 
     public function rules(): array
     {
+        $imageRule = $this->isMethod('put') || $this->isMethod('patch')
+            ? 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            : 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
+
         return [
             'tagline' => 'required|string|max:255',
             'title' => 'required|string|max:255',
             'subtitle' => 'required|string|max:255',
             'link' => 'required|url|max:255',
             'status' => 'required|boolean',
-            'image' => 'required|mimes:png,jpg,jpeg|max:2048'
+            'image' => $imageRule,
         ];
     }
 }

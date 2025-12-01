@@ -64,12 +64,14 @@
                                     <td>{{ $slide->link }}</td>
                                     <td>
                                         <div class="list-icon-function">
-                                            <a href="">
+                                            <a href="{{ route('admin.slides.edit', $slide->id) }}">
                                                 <div class="item edit">
                                                     <i class="icon-edit-3"></i>
                                                 </div>
                                             </a>
-                                            <form action="" method="POST">
+                                            <form action="{{ route('admin.slides.delete', $slide->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
                                                 <div class="item text-danger delete">
                                                     <i class="icon-trash-2"></i>
                                                 </div>
@@ -91,5 +93,25 @@
 @endsection
 
 @push('scripts')
+    @include('lib.widgets.confirm')
     @include('lib.widgets.notification')
+    <script>
+        $((function() {
+            $('.delete').on('click', function(e) {
+                e.preventDefault();
+                const form = $(this).closest('form');
+                showConfirmPopup({
+                    title: '🗑️ Confirm delete slide?',
+                    text: 'This action cannot be undone.',
+                    type: 'warning',
+                    confirmText: '✅ Delete slide',
+                    cancelText: '❌ Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        }));
+    </script>
 @endpush

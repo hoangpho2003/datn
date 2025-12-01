@@ -52,3 +52,6 @@ Route::put('/order/update', [OrderControllerr::class, 'update'])->name('orders.u
 Route::get('/slides', [SlideControllerr::class, 'index'])->name('slides');
 Route::get('/slides/create', [SlideControllerr::class, 'create'])->name('slides.create');
 Route::post('/slides/store', [SlideControllerr::class, 'store'])->name('slides.store');
+Route::get('/slides/edit/{id}', [SlideControllerr::class, 'edit'])->name('slides.edit');
+Route::put('/slides/update', [SlideControllerr::class, 'update'])->name('slides.update');
+Route::delete('/slides/delete/{id}', [SlideControllerr::class, 'delete'])->name('slides.delete');

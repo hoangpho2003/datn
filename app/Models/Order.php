@@ -20,4 +20,29 @@ class Order extends Model
     {
         return $this->hasOne(Transaction::class);
     }
+
+    public function scopeOrdered($query)
+    {
+        return $query->where('status', 'ordered');
+    }
+
+    public function scopeDelivered($query)
+    {
+        return $query->where('status', 'delivered');
+    }
+
+    public function scopeCanceled($query)
+    {
+        return $query->where('status', 'canceled');
+    }
+
+    public function scopeYear($query, $year)
+    {
+        return $query->whereYear('created_at', $year);
+    }
+
+    public function scopeMonth($query, $month)
+    {
+        return $query->whereMonth('created_at', $month);
+    }
 }

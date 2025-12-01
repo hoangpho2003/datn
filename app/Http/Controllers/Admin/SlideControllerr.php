@@ -53,6 +53,63 @@ class SlideControllerr extends Controller
         }
     }
 
+    public function edit($id)
+    {
+        $slide = Slide::findOrFail($id);
+        return view('admin.slides.edit', compact('slide'));
+    }
+
+    public function update(SlideRequest $request)
+    {
+        $data = $request->validated();
+
+        try {
+            $slide = Slide::findOrFail($request->id);
+            $slide->tagline = $data['tagline'];
+            $slide->title = $data['title'];
+            $slide->subtitle = $data['subtitle'];
+            $slide->link = $data['link'];
+            $slide->status = $data['status'];
+
+            if ($request->hasFile('image')) {
+                if (file_exists(public_path('/uploads/slides/' . $slide->image))) {
+                    unlink(public_path('/uploads/slides/' . $slide->image));
+                }
+
+                $image = $request->file('image');
+                $file_extension = $image->extension();
+                $file_name = Carbon::now()->timestamp . '.' . $file_extension;
+                $this->GenerateSlideImage($image, $file_name);
+                $slide->image = $file_name;
+            }
+
+            $slide->save();
+
+            return redirect()->route('admin.slides')->with('success', 'Success to update Slide!');
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return back()->withInput()->with('error', 'Failed to update slide!');
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            $slide = Slide::findOrFail($id);
+
+            if (file_exists(public_path('/uploads/slides/' . $slide->image))) {
+                unlink(public_path('/uploads/slides/' . $slide->image));
+            }
+
+            $slide->delete();
+
+            return redirect()->route('admin.slides')->with('success', 'Success to delete Slide!');
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return back()->with('error', 'Failed to delete slide!');
+        }
+    }
+
     public function GenerateSlideImage($image, $imageName)
     {
         $destinationPath = public_path('/uploads/slides/');
