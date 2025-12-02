@@ -3,10 +3,12 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BrandsController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\OrderControllerr;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SlideControllerr;
+use App\Http\Controllers\SearchController;
 use Illuminate\Routing\RouteUri;
 
 Route::get('/index', [AdminController::class, 'index'])->name('index');
@@ -55,3 +57,10 @@ Route::post('/slides/store', [SlideControllerr::class, 'store'])->name('slides.s
 Route::get('/slides/edit/{id}', [SlideControllerr::class, 'edit'])->name('slides.edit');
 Route::put('/slides/update', [SlideControllerr::class, 'update'])->name('slides.update');
 Route::delete('/slides/delete/{id}', [SlideControllerr::class, 'delete'])->name('slides.delete');
+
+///CONTACTS ROUTES
+Route::get('/contacts', [ContactController::class, 'index'])->name('contacts');
+Route::delete('/contacts/delete/{id}', [ContactController::class, 'delete'])->name('contacts.delete');
+
+///Search routes
+Route::get('/search', [SearchController::class, 'adminProductSearch'])->name('search');

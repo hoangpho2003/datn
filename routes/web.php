@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
@@ -31,3 +33,10 @@ Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('wishlist
 Route::delete('/wishlist/remove/{rowId}', action: [WishlistController::class, 'remove'])->name('wishlist.remove');
 Route::delete('/wishlist/clear', action: [WishlistController::class, 'clear'])->name('wishlist.clear');
 Route::post('/wishlist/moveToCart/{rowId}', [WishlistController::class, 'moveToCart'])->name('wishlist.moveToCart');
+
+///CONTACT ROUTES
+Route::get('/contact-us', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/contact/store', [ContactController::class, 'store'])->name('contact.store');
+
+///Search routes
+Route::get('/search', [SearchController::class, 'productSearch'])->name('home.search');

@@ -48,8 +48,9 @@ class ProductController extends Controller
             $product->brand_id = $data['brand_id'];
             $current_timestamp = Carbon::now()->timestamp;
 
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
+            $image_name = "";
+            $image = $request->file('image');
+            if ($image) {
                 $image_name = $current_timestamp . '.' . $image->extension();
                 $this->GenerateProductImage($image, $image_name);
                 $product->image = $image_name;
@@ -72,6 +73,8 @@ class ProductController extends Controller
                         $counter++;
                     }
                 }
+                $this->GenerateProductThumbailsImage($image, $image_name);
+                array_push($gallery_arr, $image_name);
                 $gallery_images = implode(',', $gallery_arr);
             }
             $product->images = $gallery_images;
@@ -118,11 +121,21 @@ class ProductController extends Controller
                 if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
                 }
+
+                $oldThumbPath = public_path('uploads/products/thumbnails/' . $product->image);
+                if (file_exists($oldThumbPath)) {
+                    unlink($oldThumbPath);
+                }
+
                 $image = $request->file('image');
                 $image_name = $current_timestamp . '.' . $image->extension();
+
                 $this->GenerateProductImage($image, $image_name);
+                $this->GenerateProductThumbailsImage($image, $image_name);
+
                 $product->image = $image_name;
             }
+
 
             $gallery_arr = array();
             $gallery_images = "";
