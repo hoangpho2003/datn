@@ -18,4 +18,14 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class, 'brand_id');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class)->where('status', true);
+    }
+
+    public function averageRating()
+    {
+        return $this->reviews()->avg('rating');
+    }
 }

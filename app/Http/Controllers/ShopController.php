@@ -43,19 +43,56 @@ class ShopController extends Controller
         $brands = Brand::orderBy('name', 'asc')->get();
         $categories = Category::orderBy('name', 'asc')->get();
         $products = Product::where(function ($query) use ($f_brands) {
-            $query->whereIn('brand_id', explode(',', $f_brands))->orWhereRaw("'" . $f_brands . "'=''");})
+            $query->whereIn('brand_id', explode(',', $f_brands))->orWhereRaw("'" . $f_brands . "'=''");
+        })
             ->where(function ($query) use ($f_categories) {
-            $query->whereIn('category_id', explode(',', $f_categories))->orWhereRaw("'" . $f_categories . "'=''");})
-            ->where(function($query) use($min_price, $max_price){
-            $query->whereBetween('price', [$min_price, $max_price])->orWhereBetween('sale_price', [$min_price, $max_price]);})
+                $query->whereIn('category_id', explode(',', $f_categories))->orWhereRaw("'" . $f_categories . "'=''");
+            })
+            ->where(function ($query) use ($min_price, $max_price) {
+                $query->whereBetween('price', [$min_price, $max_price])->orWhereBetween('sale_price', [$min_price, $max_price]);
+            })
             ->orderBy($o_column, $o_order)->paginate($size);
         return view('shop', compact('products', 'size', 'order', 'brands', 'f_brands', 'categories', 'f_categories', 'min_price', 'max_price'));
     }
 
     public function show($slug)
     {
-        $product = Product::where('slug', $slug)->first();
-        $products = Product::where('slug', '!=', $slug)->inRandomOrder()->take(8)->get();
-        return view('details', compact('product', 'products'));
+        $product = Product::with(['reviews.user'])
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        $products = Product::where('slug', '!=', $slug)
+            ->inRandomOrder()
+            ->take(8)
+            ->get();
+
+        $avgRating = round($product->reviews->avg('rating'), 1);
+        $reviewCount = $product->reviews->count();
+
+        $canReview = false;
+        $userReview = null;
+
+        if (auth()->check()) {
+            $canReview = auth()->user()
+                ->orders()
+                ->where('status', 'delivered')
+                ->whereHas('orderItems', function ($q) use ($product) {
+                    $q->where('product_id', $product->id);
+                })
+                ->exists();
+
+            $userReview = $product->reviews
+                ->where('user_id', auth()->id())
+                ->first();
+        }
+
+        return view('details', compact(
+            'product',
+            'products',
+            'avgRating',
+            'reviewCount',
+            'canReview',
+            'userReview'
+        ));
     }
 }

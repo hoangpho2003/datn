@@ -9,6 +9,9 @@ use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::get('/about-us', [HomeController::class, 'aboutUs'])->name('home.aboutUs');
+Route::get('/privacy-policy', [HomeController::class, 'privacyPolicy'])->name('home.privacyPolicy');
+Route::get('/temrm-conditions', [HomeController::class, 'termConditions'])->name('home.termConditions');
 
 ///SHOP ROUTES
 Route::get('/shop', action: [ShopController::class, 'index'])->name('shop.index');

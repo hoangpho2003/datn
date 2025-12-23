@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
         integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     @stack('styles')
 </head>
 
@@ -351,7 +352,7 @@
                             <a href="{{ route('cart.index') }}" class="navigation__link">Cart</a>
                         </li>
                         <li class="navigation__item">
-                            <a href="about.html" class="navigation__link">About</a>
+                            <a href="{{ route('home.aboutUs') }}" class="navigation__link">About</a>
                         </li>
                         <li class="navigation__item">
                             <a href="{{ route('contact.index') }}" class="navigation__link">Contact</a>
@@ -441,7 +442,7 @@
                             <a href="{{ route('cart.index') }}" class="navigation__link">Cart</a>
                         </li>
                         <li class="navigation__item">
-                            <a href="about.html" class="navigation__link">About</a>
+                            <a href="{{ route('home.aboutUs') }}" class="navigation__link">About</a>
                         </li>
                         <li class="navigation__item">
                             <a href="{{ route('contact.index') }}" class="navigation__link">Contact</a>
@@ -545,9 +546,9 @@
                                 class="logo__image d-block" />
                         </a>
                     </div>
-                    <p class="footer-address">123 Beach Avenue, Surfside City, CA 00000</p>
-                    <p class="m-0"><strong class="fw-medium">contact@surfsidemedia.in</strong></p>
-                    <p><strong class="fw-medium">+1 000-000-0000</strong></p>
+                    <p class="footer-address">Hoa Khanh Bac, Lien Chieu, Da Nang</p>
+                    <p class="m-0"><strong class="fw-medium">photh.21it@vku.udn.vn</strong></p>
+                    <p><strong class="fw-medium">+84922815775</strong></p>
 
                     <ul class="social-links list-unstyled d-flex flex-wrap mb-0">
                         <li>
@@ -597,66 +598,54 @@
                 <div class="footer-column footer-menu mb-4 mb-lg-0">
                     <h6 class="sub-menu__title text-uppercase">Company</h6>
                     <ul class="sub-menu__list list-unstyled">
-                        <li class="sub-menu__item"><a href="about-2.html" class="menu-link menu-link_us-s">About
+                        <li class="sub-menu__item"><a href="{{ route('home.aboutUs') }}"
+                                class="menu-link menu-link_us-s">About
                                 Us</a></li>
-                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Careers</a>
-                        </li>
-                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Affiliates</a>
-                        </li>
-                        <li class="sub-menu__item"><a href="blog_list1.html"
-                                class="menu-link menu-link_us-s">Blog</a></li>
-                        <li class="sub-menu__item"><a href="contact-2.html" class="menu-link menu-link_us-s">Contact
+                        <li class="sub-menu__item"><a href="{{ route('contact.index') }}"
+                                class="menu-link menu-link_us-s">Contact
                                 Us</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-column footer-menu mb-4 mb-lg-0">
-                    <h6 class="sub-menu__title text-uppercase">Shop</h6>
+                    <h6 class="sub-menu__title text-uppercase">Brands</h6>
                     <ul class="sub-menu__list list-unstyled">
-                        <li class="sub-menu__item"><a href="shop2.html" class="menu-link menu-link_us-s">New
-                                Arrivals</a></li>
-                        <li class="sub-menu__item"><a href="shop3.html"
-                                class="menu-link menu-link_us-s">Accessories</a></li>
-                        <li class="sub-menu__item"><a href="shop4.html" class="menu-link menu-link_us-s">Men</a>
-                        </li>
-                        <li class="sub-menu__item"><a href="shop5.html" class="menu-link menu-link_us-s">Women</a>
-                        </li>
-                        <li class="sub-menu__item"><a href="shop1.html" class="menu-link menu-link_us-s">Shop
-                                All</a></li>
+                        @foreach ($menuBrands as $brand)
+                            <li class="sub-menu__item">
+                                <a href="{{ route('shop.index', ['brands' => $brand->id]) }}"
+                                    class="menu-link menu-link_us-s">
+                                    {{ $brand->name }}
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
 
                 <div class="footer-column footer-menu mb-4 mb-lg-0">
                     <h6 class="sub-menu__title text-uppercase">Help</h6>
                     <ul class="sub-menu__list list-unstyled">
-                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Customer
-                                Service</a></li>
-                        <li class="sub-menu__item"><a href="account_dashboard.html"
-                                class="menu-link menu-link_us-s">My Account</a>
                         </li>
-                        <li class="sub-menu__item"><a href="store_location.html"
-                                class="menu-link menu-link_us-s">Find a Store</a>
+                        <li class="sub-menu__item"><a href="{{ route('home.termConditions') }}"
+                                class="menu-link menu-link_us-s">Terms & Conditions</a>
                         </li>
-                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Legal &
+                        <li class="sub-menu__item"><a href="{{ route('home.privacyPolicy') }}"
+                                class="menu-link menu-link_us-s">Legal &
                                 Privacy</a></li>
-                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Gift
-                                Card</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-column footer-menu mb-4 mb-lg-0">
                     <h6 class="sub-menu__title text-uppercase">Categories</h6>
                     <ul class="sub-menu__list list-unstyled">
-                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Shirts</a>
-                        </li>
-                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Jeans</a>
-                        </li>
-                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Shoes</a>
-                        </li>
-                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Bags</a>
-                        </li>
-                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Shop All</a>
-                        </li>
+                        @foreach ($menuCategories as $category)
+                            <li class="sub-menu__item">
+                                <a href="{{ route('shop.index', ['categories' => $category->id]) }}"
+                                    class="menu-link menu-link_us-s">
+                                    {{ $category->name }}
+                                </a>
+                            </li>
+                        @endforeach
+
                     </ul>
                 </div>
             </div>
