@@ -51,7 +51,7 @@
                             <tbody>
                                 @foreach ($categories as $category)
                                     <tr>
-                                        <td>{{ $category->id }}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td class="pname">
                                             <div class="image">
                                                 <img src="{{ asset('uploads/categories') }}/{{ $category->image }}"

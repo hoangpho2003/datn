@@ -5,6 +5,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\User\VnpayController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,9 +27,6 @@ Route::delete('/cart/remove/{rowId}', action: [CartController::class, 'remove'])
 Route::delete('/cart/clear', action: [CartController::class, 'clear'])->name('cart.clear');
 Route::post('/cart/apply-coupon', [CartController::class, 'applyCoupon'])->name('cart.couponApply');
 Route::delete('/cart/remove-coupon', [CartController::class, 'removeCoupon'])->name('cart.couponRemove');
-Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
-Route::post('/cart/placeAnOrder', [CartController::class, 'placeAnOrder'])->name('cart.placeAnOrder');
-Route::get('/cart/orderConfirmation', [CartController::class, 'orderConfirmation'])->name('cart.orderConfirmation');
 
 ///WISHLIST ROUTES
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
@@ -43,3 +41,6 @@ Route::post('/contact/store', [ContactController::class, 'store'])->name('contac
 
 ///Search routes
 Route::get('/search', [SearchController::class, 'productSearch'])->name('home.search');
+
+Route::get('/vnpay/checkout', [VnpayController::class, 'return'])
+    ->name('vnpay.return');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\BrandRequest;
 use App\Models\Brand;
+use App\Models\Category;
 use Carbon\Carbon;
 use Intervention\Image\Laravel\Facades\Image;
 use Str;
@@ -19,7 +20,8 @@ class BrandsController extends Controller
 
     public function create()
     {
-        return view('admin.brands.create');
+        $categories = Category::all();
+        return view('admin.brands.create', compact('categories'));
     }
 
     public function store(BrandRequest $request)
@@ -39,6 +41,10 @@ class BrandsController extends Controller
             }
             $brand->save();
 
+            if ($request->filled('category_id')) {
+                $brand->categories()->attach($request->category_id);
+            }
+
             return redirect()->route('admin.brands')->with('success', 'Brand created successfully.');
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Failed to create brand!');
@@ -48,7 +54,8 @@ class BrandsController extends Controller
     public function edit($id)
     {
         $brand = Brand::find($id);
-        return view('admin.brands.edit', compact('brand'));
+        $categories = Category::all();
+        return view('admin.brands.edit', compact('brand', 'categories'));
     }
 
     public function update(BrandRequest $request)
@@ -73,6 +80,8 @@ class BrandsController extends Controller
             }
 
             $brand->save();
+
+            $brand->categories()->sync($request->category_id);
 
             return redirect()->route('admin.brands')->with('success', 'Brand updated successfully.');
         } catch (\Exception $e) {

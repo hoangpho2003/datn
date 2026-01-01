@@ -43,6 +43,7 @@
                                     <th>#</th>
                                     <th>Name</th>
                                     <th>Slug</th>
+                                    <th>Category</th>
                                     <th>Products</th>
                                     <th>Action</th>
                                 </tr>
@@ -50,10 +51,10 @@
                             <tbody>
                                 @foreach ($brands as $brand)
                                     <tr>
-                                        <td>{{ $brand->id }}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td class="pname">
                                             <div class="image">
-                                                <img src="{{ asset('uploads/brands') }}/{{ $brand->image }}"
+                                                <img src="{{ asset('uploads/brands/' . $brand->image) }}"
                                                     alt="{{ $brand->name }}" class="image">
                                             </div>
                                             <div class="name">
@@ -61,9 +62,18 @@
                                             </div>
                                         </td>
                                         <td>{{ $brand->slug }}</td>
-                                        <td><a href="#" target="_blank">0</a></td>
                                         <td>
-                                            <div class="list-icon-function">
+                                            @if ($brand->categories->count() > 0)
+                                                @foreach ($brand->categories as $category)
+                                                    <span class="badge bg-primary">{{ $category->name }}</span>
+                                                @endforeach
+                                            @else
+                                                <span class="text-muted">No category</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $brand->products->count() }}</td>
+                                        <td>
+                                            <div class="list-icon-function d-flex gap-2">
                                                 <a href="{{ route('admin.brands.edit', $brand->id) }}">
                                                     <div class="item edit">
                                                         <i class="icon-edit-3"></i>
@@ -73,9 +83,10 @@
                                                     method="POST">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <div class="item text-danger delete">
+                                                    <button type="submit"
+                                                        class="item text-danger delete border-0 bg-transparent p-0">
                                                         <i class="icon-trash-2"></i>
-                                                    </div>
+                                                    </button>
                                                 </form>
                                             </div>
                                         </td>

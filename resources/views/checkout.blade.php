@@ -28,7 +28,7 @@
                     </span>
                 </a>
             </div>
-            <form name="checkout-form" action="{{ route('cart.placeAnOrder') }}" method="POST">
+            <form name="checkout-form" action="{{ route('user.checkout.placeAnOrder') }}" method="POST">
                 @csrf
                 <div class="checkout-form">
                     <div class="billing-info__wrapper">
@@ -221,22 +221,16 @@
                             <div class="checkout__payment-methods">
                                 <div class="form-check">
                                     <input class="form-check-input form-check-input_fill" type="radio" name="mode"
-                                        id="mode1" value="card">
-                                    <label class="form-check-label" for="checkout_payment_method_2">
-                                        Debit or Credit Card
+                                        value="vnpay">
+                                    <label class="form-check-label">
+                                        VNPAY
                                     </label>
                                 </div>
+
                                 <div class="form-check">
                                     <input class="form-check-input form-check-input_fill" type="radio" name="mode"
-                                        id="mode2" value="paypal">
-                                    <label class="form-check-label" for="checkout_payment_method_4">
-                                        Paypal
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input form-check-input_fill" type="radio" name="mode"
-                                        id="mode3" value="cod">
-                                    <label class="form-check-label" for="checkout_payment_method_3">
+                                        value="cod" required>
+                                    <label class="form-check-label">
                                         Cash on delivery
                                     </label>
                                 </div>
@@ -244,12 +238,17 @@
                                 <div class="policy-text">
                                     Your personal data will be used to process your order, support your experience
                                     throughout this
-                                    website, and for other purposes described in our <a href="terms.html"
-                                        target="_blank">privacy
+                                    website, and for other purposes described in our <a
+                                        href={{ route('home.privacyPolicy') }} target="_blank">privacy
                                         policy</a>.
                                 </div>
                             </div>
-                            <button class="btn btn-primary btn-checkout">PLACE ORDER</button>
+                            @error('mode')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                            <button type="submit" id="placeOrderBtn" class="btn btn-primary" disabled>
+                                Place Order
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -257,3 +256,17 @@
         </section>
     </main>
 @endsection
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const radios = document.querySelectorAll('input[name="mode"]');
+            const btn = document.getElementById('placeOrderBtn');
+
+            radios.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    btn.disabled = false;
+                });
+            });
+        });
+    </script>
+@endpush

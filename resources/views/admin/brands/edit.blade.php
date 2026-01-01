@@ -47,6 +47,22 @@
                         <span class="alert alert-danger">{{ $message }}</span>
                     @enderror
 
+                    <fieldset class="name">
+                        <div class="body-title">Category <span class="tf-color-1">*</span></div>
+                        <select name="category_id" class="flex-grow" required>
+                            <option value="">-- Select Category --</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ $brand->categories->contains($category->id) ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </fieldset>
+                    @error('category_id')
+                        <span class="alert alert-danger">{{ $message }}</span>
+                    @enderror
+
                     <fieldset>
                         <div class="body-title">Upload Image <span class="tf-color-1">*</span></div>
                         <div class="upload-image flex-grow">

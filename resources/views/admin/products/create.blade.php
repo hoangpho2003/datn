@@ -76,6 +76,7 @@
                             </div>
                             <div class="select">
                                 <select class="" name="brand_id">
+                                    <option>Choose Brand</option>
                                     @foreach ($brands as $brand)
                                         <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                     @endforeach

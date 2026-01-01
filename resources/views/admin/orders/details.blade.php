@@ -56,6 +56,8 @@
                                     <span class="badge bg-success">Delivered</span>
                                 @elseif ($order->status == 'canceled')
                                     <span class="badge bg-danger">Canceled</span>
+                                @elseif($order->status == 'paid')
+                                    <span class="badge bg-info">Paid</span>
                                 @else
                                     <span class="badge bg-warning">Ordered</span>
                                 @endif
@@ -187,6 +189,34 @@
                                 <div class="select">
                                     <select id="order status" name="order status">
                                         <option value="ordered" {{ $order->status == 'ordered' ? 'selected' : '' }}>Ordered
+                                        </option>
+                                        <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>
+                                            Delivered
+                                        </option>
+                                        <option value="canceled" {{ $order->status == 'canceled' ? 'selected' : '' }}>
+                                            Canceled
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary tf-button w208">Update Status</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            @elseif ($order->status == 'paid')
+                <div class="wg-box mt-5">
+                    <h5>Update Order Status</h5>
+                    <form action="{{ route('admin.orders.update') }}" method="POST" id="statusForm">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" name="order_id" value="{{ $order->id }}" />
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="select">
+                                    <select id="order status" name="order status">
+                                        <option value="paid" {{ $order->status == 'paid' ? 'selected' : '' }}>Paid
                                         </option>
                                         <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>
                                             Delivered
