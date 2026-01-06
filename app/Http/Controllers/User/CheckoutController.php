@@ -99,7 +99,6 @@ class CheckoutController extends Controller
             $transaction->status = "pending";
             $transaction->save();
         } elseif ($request->mode == "vnpay") {
-
             $transaction = new Transaction();
             $transaction->user_id = $user_id;
             $transaction->order_id = $order->id;

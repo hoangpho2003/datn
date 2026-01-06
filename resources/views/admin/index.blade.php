@@ -136,52 +136,49 @@
                     <div class="flex items-center justify-between">
                         <h5>Monthly Revenue</h5>
                     </div>
+
                     <div class="flex flex-wrap gap40">
                         <div>
                             <div class="mb-2">
                                 <div class="block-legend">
-                                    <div class="dot t1"></div>
+                                    <div style="width:10px;height:10px;border-radius:50%;background:#4f46e5;"></div>
                                     <div class="text-tiny">Total</div>
                                 </div>
                             </div>
-                            <div class="flex items-center gap10">
-                                <h4>${{ $reportData['yearly']['amount'] }}</h4>
-                            </div>
+                            <h4>${{ $reportData['yearly']['amount'] }}</h4>
                         </div>
+
                         <div>
                             <div class="mb-2">
                                 <div class="block-legend">
-                                    <div class="dot t2"></div>
+                                    <div style="width:10px;height:10px;border-radius:50%;background:#f59e0b;"></div>
                                     <div class="text-tiny">Pending</div>
                                 </div>
                             </div>
-                            <div class="flex items-center gap10">
-                                <h4>${{ $reportData['yearly']['ordered_amount'] }}</h4>
-                            </div>
+                            <h4>${{ $reportData['yearly']['ordered_amount'] }}</h4>
                         </div>
+
                         <div>
                             <div class="mb-2">
                                 <div class="block-legend">
-                                    <div class="dot t2"></div>
+                                    <div style="width:10px;height:10px;border-radius:50%;background:#22c55e;"></div>
                                     <div class="text-tiny">Delivered</div>
                                 </div>
                             </div>
-                            <div class="flex items-center gap10">
-                                <h4>${{ $reportData['yearly']['delivered_amount'] }}</h4>
-                            </div>
+                            <h4>${{ $reportData['yearly']['delivered_amount'] }}</h4>
                         </div>
+
                         <div>
                             <div class="mb-2">
                                 <div class="block-legend">
-                                    <div class="dot t2"></div>
+                                    <div style="width:10px;height:10px;border-radius:50%;background:#ef4444;"></div>
                                     <div class="text-tiny">Canceled</div>
                                 </div>
                             </div>
-                            <div class="flex items-center gap10">
-                                <h4>${{ $reportData['yearly']['canceled_amount'] }}</h4>
-                            </div>
+                            <h4>${{ $reportData['yearly']['canceled_amount'] }}</h4>
                         </div>
                     </div>
+
                     <div id="line-chart-8"></div>
                 </div>
 

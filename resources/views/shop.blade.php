@@ -438,31 +438,35 @@
                                             @endif
                                         </span>
                                     </div>
-                                    <div class="product-card__review d-flex align-items-center">
+                                    @php
+                                        $avgRating = $product->reviews_avg_rating ?? 0;
+                                        $reviewCount = $product->reviews_count ?? 0;
+
+                                        $full = floor($avgRating);
+                                        $half = $avgRating - $full >= 0.5;
+                                    @endphp
+
+                                    <div class="product-card__review d-flex align-items-center gap-2">
                                         <div class="reviews-group d-flex">
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <svg viewBox="0 0 24 24" width="14" height="14"
+                                                    fill="{{ $i <= $full ? '#f5a623' : ($i == $full + 1 && $half ? '#f5a623' : '#ddd') }}">
+                                                    <path d="M12 17.27L18.18 21l-1.64-7.03
+                             L22 9.24l-7.19-.61L12 2
+                             9.19 8.63 2 9.24l5.46
+                             4.73L5.82 21z" />
+                                                </svg>
+                                            @endfor
                                         </div>
-                                        <span class="reviews-note text-lowercase text-secondary ms-1">8k+ reviews</span>
+
+                                        @if ($reviewCount > 0)
+                                            <span class="reviews-note text-secondary small">
+                                                {{ number_format($avgRating, 1) }}/5 ({{ $reviewCount }} reviews)
+                                            </span>
+                                        @endif
                                     </div>
+
+
 
                                     @if (Cart::instance('wishlist')->content()->where('id', $product->id)->count() > 0)
                                         <form

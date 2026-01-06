@@ -121,7 +121,6 @@
                         </span>
                     </div>
 
-
                     <div class="product-single__price">
                         <span class="current-price">
                             @if ($product->sale_price)

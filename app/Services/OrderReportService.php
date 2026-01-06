@@ -11,6 +11,8 @@ class OrderReportService
         $year = $year ?? now()->year;
         $monthlyData = [];
 
+
+
         for ($m = 1; $m <= 12; $m++) {
             $orders = Order::whereYear('created_at', $year)
                 ->whereMonth('created_at', $m);
@@ -19,11 +21,11 @@ class OrderReportService
                 'month' => $m,
                 'amount' => $orders->sum('total'),
                 'ordered_amount' => (clone $orders)->where('status', 'ordered')->sum('total'),
-                'delivered_amount' => (clone $orders)->where('status', 'delivered')->sum('total'),
+                'delivered_amount' => (clone $orders)->whereIn('status', ['delivered', 'paid'])->sum('total'),
                 'canceled_amount' => (clone $orders)->where('status', 'canceled')->sum('total'),
                 'total' => $orders->count(),
                 'ordered' => (clone $orders)->where('status', 'ordered')->count(),
-                'delivered' => (clone $orders)->where('status', 'delivered')->count(),
+                'delivered' => (clone $orders)->whereIn('status', ['delivered', 'paid'])->count(),
                 'canceled' => (clone $orders)->where('status', 'canceled')->count(),
             ];
         }
@@ -39,11 +41,11 @@ class OrderReportService
         return [
             'amount' => $orders->sum('total'),
             'ordered_amount' => (clone $orders)->where('status', 'ordered')->sum('total'),
-            'delivered_amount' => (clone $orders)->where('status', 'delivered')->sum('total'),
+            'delivered_amount' => (clone $orders)->whereIn('status', ['delivered', 'paid'])->sum('total'),
             'canceled_amount' => (clone $orders)->where('status', 'canceled')->sum('total'),
             'total' => $orders->count(),
             'ordered' => (clone $orders)->where('status', 'ordered')->count(),
-            'delivered' => (clone $orders)->where('status', 'delivered')->count(),
+            'delivered' => (clone $orders)->whereIn('status', ['delivered', 'paid'])->count(),
             'canceled' => (clone $orders)->where('status', 'canceled')->count(),
         ];
     }

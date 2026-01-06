@@ -15,7 +15,7 @@ return new class extends Migration {
             'paid',
             'delivered',
             'canceled'
-        ) DEFAULT 'pending'
+        ) DEFAULT 'ordered'
     ");
     }
 

@@ -105,6 +105,7 @@ class VnpayController extends Controller
             $order->save();
 
             Cart::instance('cart')->destroy();
+            Session::put('order_id', $order->id);
             Session::forget(['checkout', 'coupon', 'discounts', 'vnpay_order_id']);
 
             return redirect()

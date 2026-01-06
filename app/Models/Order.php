@@ -28,7 +28,7 @@ class Order extends Model
 
     public function scopeDelivered($query)
     {
-        return $query->where('status', 'delivered');
+        return $query->where('status', ['delivered', 'paid']);
     }
 
     public function scopeCanceled($query)
