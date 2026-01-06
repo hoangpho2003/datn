@@ -717,35 +717,40 @@
                         success: function(data) {
                             $("#box-content-search").html('');
                             $.each(data, function(index, item) {
+
                                 var url =
                                     "{{ route('shop.show', ['slug' => 'product_slug_pls']) }}";
                                 var link = url.replace('product_slug_pls', item.slug);
 
                                 $("#box-content-search").append(`
-                                    <li>
-                                        <ul>
-                                            <li class="product-item gap14 mb-10">
-                                                <div class="image no-bg">
-                                                <img src="{{ asset('uploads/products/thumbnails') }}/${item.image}" alt="${item.name}">
-                                                </div>
-                                                <div class="flex items-center justify-between gap20 flex-grow">
-                                                    <div class="name">
-                                                        <a href="${link}" class="body-text">${item.name}</a>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="mb-10">
-                                                <div class="divider"></div>
-                                            </li>
-                                        </ul>
+                            <li>
+                                <ul>
+                                    <li class="product-item gap14 mb-10 search-item">
+                                        <div class="image no-bg">
+                                            <img 
+                                                src="{{ asset('uploads/products') }}/${item.image}" 
+                                                alt="${item.name}"
+                                                class="search-product-image"
+                                            >
+                                        </div>
+                                        <div class="flex items-center justify-between gap20 flex-grow">
+                                            <div class="name">
+                                                <a href="${link}" class="body-text">${item.name}</a>
+                                            </div>
+                                        </div>
                                     </li>
-                                `);
-                            })
+                                    <li class="mb-10">
+                                        <div class="divider"></div>
+                                    </li>
+                                </ul>
+                            </li>
+                        `);
+                            });
                         }
-                    })
+                    });
                 }
-            })
-        })
+            });
+        });
     </script>
     <script src="{{ asset('admin/js/sweetalert.min.js') }}"></script>
     @stack('scripts')

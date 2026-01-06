@@ -112,8 +112,6 @@ class CheckoutController extends Controller
             return redirect()->route('user.vnpay.payment', [
                 'amount' => $order->total
             ]);
-        } else {
-            //
         }
 
         Cart::instance('cart')->destroy();

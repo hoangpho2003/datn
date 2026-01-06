@@ -59,7 +59,7 @@
                             <div class="body-title mb-10">Category <span class="tf-color-1">*</span>
                             </div>
                             <div class="select">
-                                <select class="" name="category_id">
+                                <select id="category" name="category_id">
                                     <option>Choose category</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -75,11 +75,8 @@
                             <div class="body-title mb-10">Brand <span class="tf-color-1">*</span>
                             </div>
                             <div class="select">
-                                <select class="" name="brand_id">
-                                    <option>Choose Brand</option>
-                                    @foreach ($brands as $brand)
-                                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                    @endforeach
+                                <select name="brand_id" id="brand">
+                                    <option value="">Choose Brand</option>
                                 </select>
                             </div>
                         </fieldset>
@@ -283,6 +280,26 @@
                     form.submit();
                 }
             });
+        });
+
+        document.getElementById('category').addEventListener('change', function() {
+            const categoryId = this.value;
+            const brandSelect = document.getElementById('brand');
+
+            brandSelect.innerHTML = '<option value="">Choose Brand</option>';
+
+            if (!categoryId) return;
+
+            fetch(`/admin/brands-by-category/${categoryId}`)
+                .then(res => res.json())
+                .then(brands => {
+                    brands.forEach(brand => {
+                        const option = document.createElement('option');
+                        option.value = brand.id;
+                        option.textContent = brand.name;
+                        brandSelect.appendChild(option);
+                    });
+                });
         });
     </script>
 @endpush

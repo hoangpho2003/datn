@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\ProductRequest;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -24,18 +25,19 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::select('id', 'name')->orderBy('name')->get();
-        $brands = Brand::select('id', 'name')->orderBy('name')->get();
-        return view('admin.products.create', compact('categories', 'brands'));
+        return view('admin.products.create', compact('categories'));
     }
 
     public function store(ProductRequest $request)
     {
         $data = $request->validated();
 
+        DB::beginTransaction();
+
         try {
-            $product = new product();
+            $product = new Product();
             $product->name = $data['name'];
-            $product->slug = Str::slug($data['slug']);
+            $product->slug = Str::slug($data['name']);
             $product->short_description = $data['short_description'];
             $product->description = $data['description'];
             $product->price = $data['price'];
@@ -46,47 +48,47 @@ class ProductController extends Controller
             $product->quantity = $data['quantity'];
             $product->category_id = $data['category_id'];
             $product->brand_id = $data['brand_id'];
-            $current_timestamp = Carbon::now()->timestamp;
 
-            $image_name = "";
-            $image = $request->file('image');
-            if ($image) {
+            $current_timestamp = Carbon::now()->timestamp;
+            $gallery_arr = [];
+
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
                 $image_name = $current_timestamp . '.' . $image->extension();
+
                 $this->GenerateProductImage($image, $image_name);
+
                 $product->image = $image_name;
             }
 
-            $gallery_arr = array();
-            $gallery_images = "";
-            $counter = 1;
-
             if ($request->hasFile('images')) {
-                $allowedfileExtensions = ['jpg', 'jpeg', 'png'];
-                $files = $request->file('images');
-                foreach ($files as $file) {
-                    $gextension = $file->getClientOriginalExtension();
-                    $gcheck = in_array($gextension, $allowedfileExtensions);
-                    if ($gcheck) {
-                        $gfileName = $current_timestamp . '-' . $counter . '.' . $gextension;
+                $counter = 1;
+                foreach ($request->file('images') as $file) {
+                    $ext = $file->getClientOriginalExtension();
+                    if (in_array($ext, ['jpg', 'jpeg', 'png'])) {
+                        $gfileName = $current_timestamp . '-' . $counter . '.' . $ext;
                         $this->GenerateProductThumbailsImage($file, $gfileName);
-                        array_push($gallery_arr, $gfileName);
+                        $gallery_arr[] = $gfileName;
                         $counter++;
                     }
                 }
-                $this->GenerateProductThumbailsImage($image, $image_name);
-                array_push($gallery_arr, $image_name);
-                $gallery_images = implode(',', $gallery_arr);
             }
-            $product->images = $gallery_images;
 
+            $product->images = implode(',', $gallery_arr);
             $product->save();
 
-            return redirect()->route('admin.products')->with('success', 'Product created successfully.');
+            DB::commit();
+
+            return redirect()
+                ->route('admin.products')
+                ->with('success', 'Product created successfully.');
         } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return back()->withInput()->with('error', 'Failed to create product!');
+            DB::rollBack();
+            Log::error($e);
+            return back()->withInput()->with('error', $e->getMessage());
         }
     }
+
 
     public function edit($id)
     {
@@ -213,7 +215,17 @@ class ProductController extends Controller
     {
         $destinationPathThumbnails = public_path('/uploads/products/thumbnails/');
         $img = Image::read($image->path());
-        $img->cover(104, 104, "top");
-        $img->resize(104, 104)->save($destinationPathThumbnails . '/' . $imageName);
+        $img->cover(540, 689, "top");
+        $img->resize(540, 689)->save($destinationPathThumbnails . '/' . $imageName);
+    }
+
+
+    public function getByCategory($categoryId)
+    {
+        return Category::findOrFail($categoryId)
+            ->brands()
+            ->select('brands.id', 'brands.name')
+            ->orderBy('brands.name')
+            ->get();
     }
 }

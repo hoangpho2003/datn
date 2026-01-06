@@ -36,6 +36,7 @@ Route::post('/product/store', [ProductController::class, 'store'])->name('produc
 Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('products.edit');
 Route::put('/product/update', [ProductController::class, 'update'])->name('products.update');
 Route::delete('/product/delete/{id}', [ProductController::class, 'delete'])->name('products.delete');
+Route::get('/brands-by-category/{category}', [ProductController::class, 'getByCategory']);
 
 //COUPONS ROUTES
 Route::get('/coupons', [CouponController::class, 'index'])->name('coupons');
