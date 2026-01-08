@@ -26,6 +26,22 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
+        $user = auth()->user();
+
+        if (!$user->hasVerifiedEmail()) {
+            Auth::logout();
+            return back()->withErrors([
+                'email' => 'Please verify your email before login.',
+            ]);
+        }
+
+        if ($user->status !== 'active') {
+            Auth::logout();
+            return back()->withErrors([
+                'email' => 'Your account is not active.',
+            ]);
+        }
+
         $request->session()->regenerate();
 
         return redirect()->intended(route('home.index', absolute: false));

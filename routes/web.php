@@ -7,6 +7,8 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\User\VnpayController;
 use App\Http\Controllers\WishlistController;
+use App\Models\User;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
@@ -44,3 +46,24 @@ Route::get('/search', [SearchController::class, 'productSearch'])->name('home.se
 
 Route::get('/vnpay/checkout', [VnpayController::class, 'return'])
     ->name('vnpay.return');
+
+Route::get('/verify-email/{id}/{hash}', function ($id, $hash) {
+
+    dd('HIT ROUTE');
+
+    $user = User::findOrFail($id);
+
+    if (!hash_equals(sha1($user->email), $hash)) {
+        abort(403);
+    }
+
+    if (!$user->hasVerifiedEmail()) {
+        $user->email_verified_at = now();
+        $user->status = 'active';
+        $user->save();
+    }
+
+    return redirect('/login')
+        ->with('success', 'Email verified successfully. You can now login.');
+
+})->middleware('signed');

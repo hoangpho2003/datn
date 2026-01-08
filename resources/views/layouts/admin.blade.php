@@ -20,6 +20,9 @@
     <link rel="apple-touch-icon-precomposed" href="{{ asset('admin/images/favicon.ico') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/sweetalert.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/custom.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     @include('lib.admin.admin_css')
     @stack('styles')
 </head>
@@ -155,16 +158,9 @@
                                 </li>
 
                                 <li class="menu-item">
-                                    <a href="users.html" class="">
+                                    <a href="{{ route('admin.users') }}" class="">
                                         <div class="icon"><i class="icon-user"></i></div>
                                         <div class="text">User</div>
-                                    </a>
-                                </li>
-
-                                <li class="menu-item">
-                                    <a href="settings.html" class="">
-                                        <div class="icon"><i class="icon-settings"></i></div>
-                                        <div class="text">Settings</div>
                                     </a>
                                 </li>
 
@@ -173,7 +169,7 @@
                                         @csrf
                                         <a href="{{ route('logout') }}" class=""
                                             onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                            <div class="icon"><i class="icon-settings"></i></div>
+                                            <div class="icon"> <i class="fas fa-sign-out-alt"></i></div>
                                             <div class="text">Logout</div>
                                         </a>
                                     </form>

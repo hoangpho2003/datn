@@ -27,12 +27,12 @@ class RegisteredUserController extends Controller
             'email' => $data['email'],
             'mobile' => $data['mobile'],
             'password' => Hash::make($data['password']),
+            'status' => 'inactive',
         ]);
-        
+
         event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect(route('home.index', absolute: false));
+        
+        return redirect('/')
+            ->with('success', 'Registration successful! Please check your email to verify your account.');
     }
 }

@@ -8,13 +8,13 @@ use Illuminate\Foundation\Configuration\Middleware;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         using: function () {
-            Route::middleware('web')
+            Route::middleware(['web', 'verified'])
                 ->group(base_path('routes/web.php'));
 
             Route::middleware('web')
                 ->group(base_path('routes/auth.php'));
 
-            Route::middleware(['web', 'auth'])
+            Route::middleware(['web', 'auth', 'verified'])
                 ->namespace('User')
                 ->prefix('user')
                 ->name('user.')

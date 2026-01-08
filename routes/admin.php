@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\OrderControllerr;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SlideControllerr;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Routing\RouteUri;
 
@@ -65,3 +66,8 @@ Route::delete('/contacts/delete/{id}', [ContactController::class, 'delete'])->na
 
 ///Search routes
 Route::get('/search', [SearchController::class, 'adminProductSearch'])->name('search');
+
+/// USERS ROUTES
+Route::get('/users', [UserController::class, 'index'])->name('users');
+Route::get('/user/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
