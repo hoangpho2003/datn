@@ -8,7 +8,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         using: function () {
-            Route::middleware(['web', 'verified'])
+            Route::middleware('web')
                 ->group(base_path('routes/web.php'));
 
             Route::middleware('web')

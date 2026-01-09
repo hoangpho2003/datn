@@ -108,9 +108,9 @@
                                 <svg viewBox="0 0 24 24" width="16" height="16"
                                     fill="{{ $i <= $full ? '#f5a623' : ($i == $full + 1 && $half ? '#f5a623' : '#ddd') }}">
                                     <path d="M12 17.27L18.18 21l-1.64-7.03
-                             L22 9.24l-7.19-.61L12 2
-                             9.19 8.63 2 9.24l5.46
-                             4.73L5.82 21z" />
+                                     L22 9.24l-7.19-.61L12 2
+                                     9.19 8.63 2 9.24l5.46
+                                     4.73L5.82 21z" />
                                 </svg>
                             @endfor
                         </div>
@@ -349,9 +349,9 @@
                                                                     fill="{{ $i <= $review->rating ? '#f5a623' : '#ccc' }}"
                                                                     style="cursor:pointer" viewBox="0 0 24 24">
                                                                     <path d="M12 17.27L18.18 21l-1.64-7.03
-                                     L22 9.24l-7.19-.61L12 2
-                                     9.19 8.63 2 9.24l5.46
-                                     4.73L5.82 21z" />
+                                                     L22 9.24l-7.19-.61L12 2
+                                                     9.19 8.63 2 9.24l5.46
+                                                     4.73L5.82 21z" />
                                                                 </svg>
                                                             @endfor
                                                         </div>
@@ -386,9 +386,9 @@
                                                     height="20" fill="#ccc" style="cursor:pointer"
                                                     viewBox="0 0 24 24">
                                                     <path d="M12 17.27L18.18 21l-1.64-7.03
-                                             L22 9.24l-7.19-.61L12 2
-                                             9.19 8.63 2 9.24l5.46
-                                             4.73L5.82 21z" />
+                                                             L22 9.24l-7.19-.61L12 2
+                                                             9.19 8.63 2 9.24l5.46
+                                                             4.73L5.82 21z" />
                                                 </svg>
                                             @endfor
                                         </div>
@@ -446,7 +446,29 @@
             }
           }'>
                     <div class="swiper-wrapper">
-                        @foreach ($products as $product)
+                        @php
+                            $limit = 8;
+
+                            if (isset($recentProducts) && $recentProducts->count() > 0) {
+                                $recentCount = $recentProducts->count();
+
+                                if ($recentCount >= $limit) {
+                                    $displayProducts = $recentProducts->take($limit);
+                                } else {
+                                    $needed = $limit - $recentCount;
+
+                                    $randomProducts = $products
+                                        ->whereNotIn('id', $recentProducts->pluck('id'))
+                                        ->take($needed);
+
+                                    $displayProducts = $recentProducts->concat($randomProducts);
+                                }
+                            } else {
+                                $displayProducts = $products->take($limit);
+                            }
+                        @endphp
+
+                        @foreach ($displayProducts as $product)
                             <div class="swiper-slide product-card">
                                 <div class="pc__img-wrapper">
                                     <a href="{{ route('shop.show', $product->slug) }}">
@@ -523,7 +545,7 @@
                 <!-- /.products-pagination -->
             </div><!-- /.position-relative -->
 
-        </section><!-- /.products-carousel container -->
+        </section>
     </main>
 @endsection
 @push('scripts')

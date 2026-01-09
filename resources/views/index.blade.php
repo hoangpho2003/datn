@@ -258,6 +258,59 @@
 
             <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
 
+            <section class="hot-deals container py-5">
+                <h2 class="section-title text-center mb-4">Best Sellers</h2>
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-10">
+                        <div class="swiper-container js-swiper-slider"
+                            data-settings='{
+                     "autoplay": {"delay": 5000},
+                     "slidesPerView": 5,
+                     "slidesPerGroup": 5,
+                     "effect": "slide",
+                     "loop": false,
+                     "breakpoints": {
+                         "320": {"slidesPerView": 2, "slidesPerGroup": 2, "spaceBetween": 14},
+                         "768": {"slidesPerView": 3, "slidesPerGroup": 3, "spaceBetween": 24},
+                         "992": {"slidesPerView": 4, "slidesPerGroup": 4, "spaceBetween": 30},
+                         "1200": {"slidesPerView": 5, "slidesPerGroup": 5, "spaceBetween": 30}
+                     }
+                 }'>
+                            <div class="swiper-wrapper">
+                                @foreach ($bproducts as $product)
+                                    <div class="swiper-slide product-card product-card_style3">
+                                        <div class="pc__img-wrapper">
+                                            <a href="{{ route('shop.show', $product->slug) }}">
+                                                <img loading="lazy"
+                                                    src="{{ asset('uploads/products/' . $product->image) }}"
+                                                    alt="{{ $product->name }}" class="pc__img w-100">
+                                            </a>
+                                        </div>
+                                        <div class="pc__info mt-2 text-center">
+                                            <h6 class="pc__title mb-1">
+                                                <a
+                                                    href="{{ route('shop.show', $product->slug) }}">{{ $product->name }}</a>
+                                            </h6>
+                                            <div class="product-card__price">
+                                                @if ($product->sale_price)
+                                                    <span class="text-secondary">
+                                                        <s>${{ $product->price }}</s> ${{ $product->sale_price }}
+                                                    </span>
+                                                @else
+                                                    <span class="text-secondary">${{ $product->price }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
+
             <section class="category-banner container">
                 <div class="row">
                     <div class="col-md-6">

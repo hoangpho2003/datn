@@ -1,27 +1,68 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
-    </div>
+@extends('layouts.app')
+@section('content')
+    <main class="pt-90">
+        <div class="mb-4 pb-4"></div>
+        <section class="login-register container">
+            <ul class="nav nav-tabs mb-5" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link nav-link_underscore active">
+                        Confirm Password
+                    </a>
+                </li>
+            </ul>
 
-    <form method="POST" action="{{ route('password.confirm') }}">
-        @csrf
+            <div class="tab-content pt-2">
+                <div class="tab-pane fade show active">
+                    <div class="register-form">
 
-        <!-- Password -->
-        <div>
-            <x-input-label for="password" :value="__('Password')" />
+                        <p class="text-muted mb-4">
+                            This is a secure area of the application. Please confirm your password before continuing.
+                        </p>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+                        <form method="POST" action="{{ route('password.confirm') }}" id="confirmPasswordForm" novalidate>
+                            @csrf
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
 
-        <div class="flex justify-end mt-4">
-            <x-primary-button>
-                {{ __('Confirm') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+                            <div class="form-floating mb-4">
+                                <input id="password" type="password"
+                                    class="form-control form-control_gray @error('password') is-invalid @enderror"
+                                    name="password" required autocomplete="current-password">
+                                <label for="password">Password *</label>
+                                <div class="invalid-feedback">
+                                    @error('password')
+                                        {{ $message }}
+                                    @else
+                                        Please enter your password.
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary w-100 text-uppercase" type="submit">
+                                Confirm
+                            </button>
+
+                            <div class="text-center mt-4">
+                                <a href="{{ route('login') }}" class="text-decoration-none">
+                                    ← Back to Login
+                                </a>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const passwordInput = document.getElementById('password');
+
+            passwordInput.addEventListener('input', () => {
+                const isValid = passwordInput.value.length > 0;
+                passwordInput.classList.remove('is-valid', 'is-invalid');
+                passwordInput.classList.add(isValid ? 'is-valid' : 'is-invalid');
+            });
+        });
+    </script>
+@endsection

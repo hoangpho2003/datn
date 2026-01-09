@@ -6,34 +6,43 @@
             <ul class="nav nav-tabs mb-5" id="login_register" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link nav-link_underscore active" id="login-tab" data-bs-toggle="tab" href="#tab-item-login"
-                        role="tab" aria-controls="tab-item-login" aria-selected="true">Login</a>
+                        role="tab" aria-controls="tab-item-login" aria-selected="true">
+                        Login
+                    </a>
                 </li>
             </ul>
+
             <div class="tab-content pt-2" id="login_register_tab_content">
                 <div class="tab-pane fade show active" id="tab-item-login" role="tabpanel" aria-labelledby="login-tab">
                     <div class="login-form">
                         <form method="POST" action="{{ route('login') }}" name="login-form" class="needs-validation"
-                            novalidate="">
+                            novalidate>
                             @csrf
                             <div class="form-floating mb-3">
-                                <input class="form-control form-control_gray @error('email') is-invalid @enderror"
-                                    name="email" value="{{ old('email') }}" required="" autocomplete="email"
-                                    autofocus="">
+                                <input id="email" type="email"
+                                    class="form-control form-control_gray @error('email') is-invalid @enderror"
+                                    name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                                 <label for="email">Email address *</label>
                                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
                             </div>
 
-                            <div class="pb-3"></div>
-
-                            <div class="form-floating mb-3">
+                            <div class="form-floating mb-1">
                                 <input id="password" type="password"
                                     class="form-control form-control_gray @error('password') is-invalid @enderror"
-                                    name="password" required="" autocomplete="current-password">
-                                <label for="customerPasswodInput">Password *</label>
+                                    name="password" required autocomplete="current-password">
+                                <label for="password">Password *</label>
                                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
                             </div>
 
-                            <button class="btn btn-primary w-100 text-uppercase" type="submit">Log In</button>
+                            <div class="text-end mb-3">
+                                <a href="{{ route('password.request') }}" class="text-decoration-none small">
+                                    Forgot Password?
+                                </a>
+                            </div>
+
+                            <button class="btn btn-primary w-100 text-uppercase" type="submit">
+                                Log In
+                            </button>
 
                             <div class="customer-option mt-4 text-center">
                                 <span class="text-secondary">No account yet?</span>

@@ -11,45 +11,32 @@ use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Display the login view.
-     */
     public function create(): View
     {
         return view('auth.login');
     }
 
-    /**
-     * Handle an incoming authentication request.
-     */
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
+        $request->session()->regenerate();
 
-        $user = auth()->user();
+        $user = $request->user();
 
         if (!$user->hasVerifiedEmail()) {
             Auth::logout();
-            return back()->withErrors([
-                'email' => 'Please verify your email before login.',
-            ]);
+            return redirect()->route('verification.notice')
+                ->with('warning', 'Please verify your email first!');
         }
 
         if ($user->status !== 'active') {
             Auth::logout();
-            return back()->withErrors([
-                'email' => 'Your account is not active.',
-            ]);
+            return back()->withErrors(['email' => 'Your account is not active.']);
         }
 
-        $request->session()->regenerate();
-
-        return redirect()->intended(route('home.index', absolute: false));
+        return redirect()->intended(route('home.index'));
     }
 
-    /**
-     * Destroy an authenticated session.
-     */
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();

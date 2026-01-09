@@ -28,4 +28,9 @@ class Product extends Model
     {
         return $this->reviews()->avg('rating');
     }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }

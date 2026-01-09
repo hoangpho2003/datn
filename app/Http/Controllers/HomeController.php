@@ -28,6 +28,11 @@ class HomeController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(4);
 
+        $bproducts = Product::withCount('orderItems')
+            ->orderBy('order_items_count', 'desc')
+            ->take(10)
+            ->get();
+
         if ($request->ajax()) {
             return view('partials.featured-products', compact('fproducts'))->render();
         }
@@ -36,7 +41,8 @@ class HomeController extends Controller
             'slides',
             'categories',
             'sproducts',
-            'fproducts'
+            'fproducts',
+            'bproducts'
         ));
     }
 

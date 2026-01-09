@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\RecentlyViewedProduct;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
@@ -14,13 +15,12 @@ class ShopController extends Controller
         $size = $request->query('size', 12);
         $order = $request->query('order', -1);
 
-        $f_brands = $request->query('brands');      // vd: "1,2,3"
+        $f_brands = $request->query('brands');
         $f_categories = $request->query('categories');
 
         $min_price = $request->query('min', 1);
         $max_price = $request->query('max', 500);
 
-        // Sắp xếp
         switch ($order) {
             case 1:
                 $o_column = 'created_at';
@@ -47,21 +47,17 @@ class ShopController extends Controller
         $categories = Category::orderBy('name')->get();
 
         $products = Product::query()
-            // ⭐ LOAD REVIEW
             ->withAvg('reviews', 'rating')
             ->withCount('reviews')
 
-            // Filter brand
             ->when($f_brands, function ($query) use ($f_brands) {
                 $query->whereIn('brand_id', explode(',', $f_brands));
             })
 
-            // Filter category
             ->when($f_categories, function ($query) use ($f_categories) {
                 $query->whereIn('category_id', explode(',', $f_categories));
             })
 
-            // Filter price
             ->whereNotNull('sale_price')
             ->whereBetween('sale_price', [$min_price, $max_price])
 
@@ -81,12 +77,34 @@ class ShopController extends Controller
         ));
     }
 
-
     public function show($slug)
     {
         $product = Product::with(['reviews.user'])
             ->where('slug', $slug)
             ->firstOrFail();
+
+        if (auth()->check()) {
+            RecentlyViewedProduct::updateOrCreate(
+                [
+                    'user_id' => auth()->id(),
+                    'product_id' => $product->id,
+                ],
+                [
+                    'updated_at' => now()
+                ]
+            );
+
+            $ids = RecentlyViewedProduct::where('user_id', auth()->id())
+                ->latest()
+                ->pluck('id');
+
+            if ($ids->count() > 10) {
+                RecentlyViewedProduct::whereIn(
+                    'id',
+                    $ids->slice(10)
+                )->delete();
+            }
+        }
 
         $products = Product::where('slug', '!=', $slug)
             ->inRandomOrder()
@@ -113,13 +131,28 @@ class ShopController extends Controller
                 ->first();
         }
 
+        $recentProducts = collect();
+
+        if (auth()->check()) {
+            $recentIds = RecentlyViewedProduct::where('user_id', auth()->id())
+                ->latest()
+                ->take(5)
+                ->pluck('product_id');
+
+            $recentProducts = Product::whereIn('id', $recentIds)
+                ->orderByRaw("FIELD(id," . $recentIds->implode(',') . ")")
+                ->get();
+        }
+
         return view('details', compact(
             'product',
             'products',
             'avgRating',
             'reviewCount',
             'canReview',
-            'userReview'
+            'userReview',
+            'recentProducts'
         ));
     }
+
 }
